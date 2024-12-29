@@ -79,4 +79,4 @@ def hello_world():
     return jsonify(message=f"{prediction.item():.4f}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)

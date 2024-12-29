@@ -11,12 +11,13 @@ app = Flask(__name__)
 def hello_world():
     # Tạo một instance của NeuMF
     config = {
-        'latent_dim_mf': 8,
-        'latent_dim_mlp': 8,
-        'layers': [64, 32, 16],
-        'dropout_rate_mf': 0.2,
-        'dropout_rate_mlp': 0.2
+    'layers': [128, 64, 32],
+    'latent_dim_mf': 16,
+    'latent_dim_mlp': 16,
+    'dropout_rate_mf': 0.2,
+    'dropout_rate_mlp': 0.2
     }
+
     num_users = 943# Số người dùng
     num_items = 1682# Số mặt hàng
 
@@ -34,3 +35,5 @@ def hello_world():
         prediction = model(user_id, item_id)
 
     return jsonify(message=f"{prediction.item():.4f}")
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

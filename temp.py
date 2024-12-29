@@ -92,7 +92,8 @@ config = {
 # Số lượng người dùng và mục tiêu
 num_users = df['user_id'].nunique()
 num_items = df['item_id'].nunique()
-
+print(num_users )
+print(num_items )
 # Khởi tạo mô hình
 model = NeuMF(config, num_users, num_items)
 criterion = torch.nn.BCELoss()

@@ -99,7 +99,7 @@ criterion = torch.nn.BCELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 # Huấn luyện mô hình
-num_epochs = 150
+num_epochs = 2
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
@@ -115,7 +115,4 @@ for epoch in range(num_epochs):
 
     print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {total_loss / len(dataloader):.4f}')
 
-with open('model.pkl', 'wb') as file:
-    pickle.dump(model, file)
-
-print("Mô hình đã được lưu thành công!")
+torch.save(model.state_dict(), 'model.pth')

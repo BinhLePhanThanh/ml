@@ -1,0 +1,73 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import freqz
+
+def generate_chirp_signal(start_freq, end_freq, duration, sample_rate):
+    # Tạo mảng thời gian
+    t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+    
+    # Tính toán tín hiệu chirp
+    chirp_signal = np.sin(2 * np.pi * (start_freq * t + 
+             (end_freq - start_freq) / (2 * duration) * t**2))
+    
+    return t, chirp_signal
+
+def plot_frequency_spectrum(signal, sample_rate):
+    # Tính toán FFT
+    N = len(signal)  # Số mẫu
+    fft_result = np.fft.fft(signal)
+    fft_freq = np.fft.fftfreq(N, 1/sample_rate)  # Tần số tương ứng
+
+    # Chỉ lấy nửa đầu của FFT
+    half_N = N // 2
+    plt.figure(figsize=(10, 6))
+    plt.plot(fft_freq[:half_N], np.abs(fft_result[:half_N]) / N)  # Độ lớn
+    plt.title('Frequency Spectrum of Chirp Signal')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Magnitude')
+    plt.grid()
+    plt.xlim(0, sample_rate / 2)  # Giới hạn tần số đến Nyquist
+    plt.show()
+
+start_freq = 20  # Tần số bắt đầu (Hz)
+end_freq = 20000  # Tần số kết thúc (Hz)
+duration = 5     # Thời gian (giây)
+sample_rate = 44100  # Tần số mẫu (Hz)
+
+# Tạo tín hiệu chirp
+t, chirp_signal = generate_chirp_signal(start_freq, end_freq, duration, sample_rate)
+
+# Thông số bộ lọc
+numtaps = 80            # Số lượng hệ số
+pb = 0.2                # Tần số băng thông (passband)
+sb = 0.3                # Tần số dừng (stopband)
+
+# Tạo đáp ứng xung (impulse response) cho bộ lọc lý tưởng
+n = np.arange(0, numtaps)
+h_ideal = np.sinc(0.25 * (n - (numtaps - 1) / 2))  # Bộ lọc lý tưởng
+h_hanning =h_ideal* np.hanning(numtaps)  # Nhân với cửa sổ Hanning
+
+# Chuẩn hóa bộ lọc
+h_hanning/= np.sum(h_hanning)
+
+
+array1 = np.array(h_hanning)
+array2 = np.array(chirp_signal)
+
+# Nhân chập hai mảng
+convolved_result = np.convolve(array1, array2, mode='full')
+plot_frequency_spectrum(convolved_result, 44100)
+# Tính đáp ứng tần số
+w, H = freqz(h_hanning, 1, worN=8000)
+magnitude_db = 20 * np.log10(abs(H))
+# Vẽ đáp ứng tần số
+plt.figure(figsize=(12, 6))
+plt.plot(0.5 * 44100 * w / np.pi, magnitude_db, 'b')
+plt.title('Đáp ứng tần số của bộ lọc thông thấp (độ lớn dưới dạng dB)')
+plt.xlabel('Tần số [Hz]')
+plt.ylabel('Độ lớn [dB]')
+plt.grid()
+plt.xlim(0, 0.5 * 44100)
+plt.ylim(-100, 5)  
+
+plt.show()

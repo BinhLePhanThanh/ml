@@ -7,7 +7,7 @@ WORKDIR /
 COPY api.py .
 COPY model.py .
 # Sao chép model.pkl vào container (nếu có)
-COPY model.pkl .
+COPY model.pth .
 
 # Cài đặt các thư viện cần thiết
 RUN pip install --no-cache-dir Flask torch numpy

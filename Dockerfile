@@ -5,7 +5,7 @@ WORKDIR /
 
 # Sao chép file Python vào container
 COPY api.py .
-
+COPY model.py .
 # Sao chép model.pkl vào container (nếu có)
 COPY model.pkl .
 

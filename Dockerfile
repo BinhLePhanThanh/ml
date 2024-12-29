@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
 # Thiết lập thư mục làm việc
-WORKDIR /app
+WORKDIR /
 
 # Sao chép file Python vào container
 COPY api.py .
@@ -15,4 +15,4 @@ COPY model.pkl .
 EXPOSE 5000
 
 # Lệnh để chạy ứng dụng
-CMD ["python", "api.py"]
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]

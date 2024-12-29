@@ -1,3 +1,7 @@
+from flask import Flask, jsonify, request
+import torch
+import pickle
+import numpy as np
 class NeuMF(torch.nn.Module):
     def __init__(self, config, num_users, num_items):
         super(NeuMF, self).__init__()

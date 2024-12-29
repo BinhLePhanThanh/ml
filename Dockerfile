@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Sao chép file Python vào container
 COPY app.py .
-
 # Cài đặt các thư viện cần thiết
 RUN pip install --no-cache-dir Flask torch numpy
 
@@ -16,4 +15,4 @@ COPY model.pkl .
 EXPOSE 5000
 
 # Lệnh để chạy ứng dụng
-CMD ["python", "app.py"]
+CMD ["python", "api.py"]

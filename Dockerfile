@@ -4,7 +4,7 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Sao chép file Python vào container
-COPY app.py .
+COPY api.py .
 # Cài đặt các thư viện cần thiết
 RUN pip install --no-cache-dir Flask torch numpy
 
